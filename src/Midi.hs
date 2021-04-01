@@ -4,11 +4,11 @@ import Sound.Tidal.Stream
 
 type MidiParam = (String, MidiParamType)
 
-data MidiParamType = CC { pNumber :: Int } |
-                     NRPN { pNumber :: Int }
-                       deriving Show
-
--- TODO:         SysEx { pName :: String, pBuilder :: Value -> [Word8] }
+data MidiParamType = CC { pNumber :: Int }
+                   | NRPN { pNumber :: Int }
+                   | SysEx (Value -> Maybe [Word8])
+                   | Mapped MidiParamType (Value -> Maybe Value)
+                       deriving Show   
 
 midiMap :: [MidiParam] -> [OSC]
 midiMap = map paramMap
